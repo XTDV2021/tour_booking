@@ -1,0 +1,49 @@
+.payment-page {
+  background-color: #f0f2f5;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-form {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.ant-form-item-label {
+  font-weight: bold;
+}
+
+.ant-form-vertical .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.ant-input {
+  border-radius: 4px;
+}
+
+.ant-btn-primary {
+  border-radius: 4px;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  color: #fff;
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.ant-btn-primary:active {
+  color: #fff;
+  background-color: #096dd9;
+  border-color: #096dd9;
+}

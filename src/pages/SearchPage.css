@@ -1,0 +1,105 @@
+/* SearchPage.css */
+
+/* General page layout styles */
+.search-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust the height as needed */
+  background-color: #f0f2f5; /* Light gray background */
+}
+
+/* Styles for the card */
+.tour-card {
+  display: flex;
+  flex-direction: row; /* Makes the card horizontal */
+  width: 100%;
+  max-width: 750px; /* Adjust the width as needed */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  border-radius: 8px; /* Rounded corners for the card */
+  overflow: hidden; /* Ensures the content respects the border radius */
+}
+
+.tour-card img {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 40%; /* Image takes up 40% of the card */
+  height: auto;
+  object-fit: cover; /* Ensures the image covers the area */
+}
+
+.tour-card .ant-card-body {
+  padding: 24px; /* Spacing inside the card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes space around items */
+}
+
+.tour-card .ant-card-body .ant-typography {
+  margin-bottom: 16px; /* Spacing between text elements */
+}
+
+.tour-card .ant-rate {
+  font-size: 16px; /* Size of the rating stars */
+}
+
+.tour-card .ant-tag {
+  margin-right: 8px;
+  margin-bottom: 8px; /* Spacing between tags */
+}
+
+.tour-card .ant-badge-ribbon {
+  top: -8px; /* Adjusts the position of the ribbon */
+  right: -8px; /* Adjusts the position of the ribbon */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tour-card {
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+  }
+
+  .tour-card img {
+    width: 250px; /* Fixed width */
+    height: auto; /* Height will scale automatically */
+    object-fit: cover;
+  }
+}
+.horizontal-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.horizontal-card .ant-card {
+  width: 300px;
+  margin-right: 20px;
+  transform: rotate(0deg); /* Đảo ngược lại transform mặc định */
+}
+
+.horizontal-card .ant-card-cover img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.horizontal-card {
+  display: flex;
+  flex-direction: row;
+  margin: 90px;
+}
+body {
+  margin: 8%;
+  line-height: inherit;
+}
+.horizontal-card {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 30%;
+  margin: 10px;
+}
+
+.card-link {
+  width: 100%;
+}
