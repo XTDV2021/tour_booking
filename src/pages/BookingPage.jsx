@@ -5,14 +5,24 @@ import {
   Carousel,
   Button,
   Card,
+  InputNumber,
   Typography,
   Rate,
   Row,
   Col,
   Modal,
   Calendar,
+  Badge,
+  Input,
 } from "antd";
-import { EnvironmentFilled, CalendarOutlined } from "@ant-design/icons";
+import {
+  EnvironmentFilled,
+  CalendarOutlined,
+  CarTwoTone,
+  FireTwoTone,
+  LeftOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./BookingPage.css";
 
@@ -22,6 +32,9 @@ const { Title, Text } = Typography;
 const BookingPage = () => {
   const [selectedTour, setSelectedTour] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const displayCount = 5;
+
   const [tourPrice, setTourPrice] = useState({
     "2024-03-03": 750000,
     "2024-03-09": 800000,
@@ -44,7 +57,12 @@ const BookingPage = () => {
       "https://eholiday.vn/wp-content/uploads/2021/01/8-ly-do-ban-nen-den-ha-noi-1-lan-trong-doi-4.jpg",
     ],
   ];
-
+  const [tourGuide, setTourGuide] = useState("");
+  <Input
+    placeholder="Tour Guide"
+    value={tourGuide}
+    onChange={(e) => setTourGuide(e.target.value)}
+  />;
   const handleBookTour = () => {
     bookingNavigate("/booking");
   };
@@ -74,11 +92,9 @@ const BookingPage = () => {
     setSelectedYear(values.year);
   };
   useEffect(() => {
-    // Optional: To ensure the floating box doesn't overlap content on resize
     const updateBoxPosition = () => {
       const floatingBox = document.getElementById("floating-box");
       if (window.innerWidth < 992) {
-        // Adjust the breakpoint as needed
         floatingBox.style.display = "none";
       } else {
         floatingBox.style.display = "block";
@@ -91,15 +107,75 @@ const BookingPage = () => {
       window.removeEventListener("resize", updateBoxPosition);
     };
   }, []);
+  const dates = [
+    { day: "Thu 2", date: "11 thg 3", fullDate: "2024-03-11" },
+    { day: "Thu 3", date: "12 thg 3", fullDate: "2024-03-12" },
+    { day: "Thu 4", date: "13 thg 3", fullDate: "2024-03-13" },
+    { day: "Thu 5", date: "14 thg 3", fullDate: "2024-03-14" },
+    { day: "Thu 6", date: "15 thg 3", fullDate: "2024-03-15" },
+    { day: "Thu 7", date: "16 thg 3", fullDate: "2024-03-16" },
+    { day: "Thu CN", date: "17 thg 3", fullDate: "2024-03-17" },
+    { day: "Thu 2", date: "18 thg 3", fullDate: "2024-03-18" },
+    { day: "Thu 3", date: "19 thg 3", fullDate: "2024-03-19" },
+    { day: "Thu 4", date: "20 thg 3", fullDate: "2024-03-20" },
+  ];
 
+  const [adultCount, setAdultCount] = useState(1);
+  const [childCount, setChildCount] = useState(0);
+  const adultPrice = 1000;
+  const childPrice = 0;
+  const getTotalPrice = () => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    }).format(adultCount * adultPrice + childCount * childPrice);
+  };
+  const currentDates = dates.slice(currentIndex, currentIndex + displayCount);
+  const changeDateSet = (direction) => {
+    const newIndex =
+      direction === "left"
+        ? currentIndex - displayCount
+        : currentIndex + displayCount;
+    if (newIndex >= 0 && newIndex < dates.length) {
+      setCurrentIndex(newIndex);
+    }
+  };
+  const dateSelector = (
+    <div className="date-selector-container">
+      <Button
+        shape="circle"
+        icon={<LeftOutlined />}
+        onClick={() => changeDateSet("left")}
+      />
+      <div className="dates-scroll-container">
+        {currentDates.map((date, index) => (
+          <div
+            key={index}
+            className={`date-item ${selectedDate === date.fullDate ? "selected" : ""}`}
+            onClick={() => setSelectedDate(date.fullDate)}
+          >
+            {date.day}
+            <br />
+            {date.date}
+          </div>
+        ))}
+      </div>
+      <Button
+        shape="circle"
+        icon={<RightOutlined />}
+        onClick={() => changeDateSet("right")}
+      />
+    </div>
+  );
   return (
     <Layout className="landing-page">
       <Header>
         <div className="logo" />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-          <Menu.Item key="1">Trang chủ</Menu.Item>
-          <Menu.Item key="2">Giới thiệu</Menu.Item>
-          <Menu.Item key="3">Liên hệ</Menu.Item>
+          <Menu.Item key="1">Home</Menu.Item>
+          <Menu.Item key="2">About</Menu.Item>
+          <Menu.Item key="3">Contact</Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: "90px 100px" }}>
@@ -119,9 +195,14 @@ const BookingPage = () => {
                         fontWeight: "bold",
                         marginBottom: "20px",
                         display: "flex",
+                        backgroundColor: "#F0FFFF",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                       }}
                     >
-                      <EnvironmentFilled /> Hà Nội - Tour
+                      <EnvironmentFilled style={{ marginRight: "10px" }} />{" "}
+                      Hanoi - Tour
                     </h1>
                   </div>
                   <div>
@@ -179,13 +260,23 @@ const BookingPage = () => {
             </Carousel>
           </div>
         </div>
-        <div style={{ padding: "55px", maxWidth: "1700px", margin: "0 auto" }}>
-          <Row gutter={19}>
+        <div style={{ padding: "55px", maxWidth: "1800px", margin: "0 auto" }}>
+          <Row gutter={0}>
             <Col span={18}>
-              <Card style={{ marginBottom: "0px" }}>
-                <Title level={4}>Thông tin tour</Title>
+              <Card style={{ marginBottom: "px" }}>
+                <ul class="horizontal-list">
+                  <ul style={{ display: "flex", listStyleType: "none" }}>
+                    <li style={{ marginRight: "100px" }}>
+                      <CarTwoTone /> Transportation service
+                    </li>
+                    <li style={{ marginRight: "90px" }}>
+                      <FireTwoTone /> Fire
+                    </li>
+                  </ul>
+                </ul>
+                <Title level={4}>Tour Information</Title>
                 <Rate disabled defaultValue={4.5} />
-                <Text> 9.2 Tuyệt vời | Từ 34 đánh giá </Text>
+                <Text> 9.2 Great | From 34 reviews </Text>
                 <br />
                 <br />
                 <div
@@ -200,11 +291,11 @@ const BookingPage = () => {
                       color: "#333",
                     }}
                   >
-                    Dưới đây là một phần nhỏ của những trải nghiệm tuyệt vời bạn
-                    sẽ có trong chuyến hành trình tại Hà Nội. Ngoài ra, bạn còn
-                    có cơ hội tham quan các điểm đến nổi tiếng như Chùa Hương,
-                    Khu di tích Lịch sử Thăng Long, Văn Miếu - Quốc Tử Giám, và
-                    nhiều địa điểm khác.
+                    Here is a small part of the great experiences you will have
+                    on your journey in Hanoi. Additionally, you will have the
+                    opportunity to visit famous destinations such as Perfume
+                    Pagoda, Thang Long Imperial Citadel, Temple of Literature,
+                    and many other places.
                   </Text>
                   <br />
                 </div>
@@ -213,82 +304,133 @@ const BookingPage = () => {
                   <div class="schedule-item">
                     <div class="time">07:30-12:00</div>
                     <div>
-                      Xe cùng hướng dẫn viên đón khách tại khách sạn khởi hành
-                      đi thăm Vịnh Hạ Long (chỉ áp dụng với vé khởi hành từ Hà
-                      Nội).
+                      Bus with guide pick up guests at the hotel to visit Halong
+                      Bay (only applicable to tickets departing from Hanoi).
                     </div>
                   </div>
                   <div class="schedule-item">
                     <div class="time">12:00-12:15</div>
                     <div>
-                      Quý khách đến bến cảng tàu Hạ Long và làm thủ tục lên tàu.
+                      Guests arrive at Halong Bay cruise port and board.
                     </div>
                   </div>
                   <div class="schedule-item">
                     <div class="time">12:15-14:00</div>
                     <div>
-                      Tàu rời bến bắt đầu chuyến thăm quan du ngoạn Vịnh Hạ
-                      Long, tàu sẽ đi ngang qua các hòn đá lớn nhỏ với tên gọi
-                      đặc biệt như: Hòn Gà Chọi, hòn Chó Đá, hòn Đỉnh Hương. Quý
-                      khách dùng bữa cơm trưa trên tàu.
+                      The ship departs and starts the Halong Bay cruise, passing
+                      through large and small rock formations with special names
+                      like: Fighting Cock Island, Dog Stone, Dinh Huong Islet.
+                      Guests have lunch on board.
                     </div>
                   </div>
                   <div class="schedule-item">
                     <div class="time">14:00-16:30</div>
                     <div>
-                      Quý khách thăm quan Hang Sửng Sốt, một trong những hang
-                      động đẹp nhất vịnh Hạ Long. Tiếp đó, tàu di chuyển đến
-                      Hang Luồn, du khách có thể chèo kayak/đò hoặc nghỉ ngơi
-                      trên tàu. Tiếp theo, tàu sẽ đưa khách đến với đảo Ti Top.
-                      Quý khách có thể tắm biển tại bãi tắm TiTop với bãi cát
-                      trắng, hoặc trekking leo lên đỉnh núi Ti Top ngắm nhìn
-                      toàn cảnh Vịnh Hạ Long.
+                      Guests visit Surprising Cave, one of the most beautiful
+                      caves in Halong Bay. Then, the ship moves to Luon Cave,
+                      where guests can kayak/row or rest on the ship. Next, the
+                      ship takes guests to Ti Top Island. Guests can swim at
+                      TiTop beach with white sand, or trek up Ti Top mountain to
+                      enjoy the panoramic view of Halong Bay.
                     </div>
                   </div>
                   <div class="schedule-item">
                     <div class="time">16:30-18:00</div>
                     <div>
-                      Quay trở lại tàu để khởi hành về lại cảng Hạ Long. Quý
-                      khách có thể nghe nhạc và thư giãn trên boong tàu, hòa
-                      mình vào thiên nhiên.
+                      Return to the ship to return to Halong port. Guests can
+                      listen to music and relax on the ship's deck, immerse
+                      themselves in nature.
                     </div>
                   </div>
                   <div class="schedule-item">
                     <div class="time">18:00-21:30</div>
                     <div>
-                      Tàu cập bến. Chia tay nhà tàu và lên xe về Hà Nội (chỉ áp
-                      dụng với vé khởi hành từ Hà Nội). Kết thúc tour.
+                      The ship docks. Farewell to the ship and board the car
+                      back to Hanoi (only applicable to tickets departing from
+                      Hanoi). End of tour.
                     </div>
                   </div>
                 </div>
               </Card>
             </Col>
-            <Col span={6}>
-              <Card>
-                <div
+            <Col span={6} style={{ marginLeft: "0px" }}>
+              <div style={{ margin: "10px" }}>
+                <Card
                   style={{
+                    flexGrow: 1,
+                    textAlign: "left",
+                    backgroundColor: "#FFF5EE",
                     display: "flex",
+                    flexDirection: "column",
                     justifyContent: "space-between",
-                    alignItems: "center",
+                    margin: "5px",
                   }}
                 >
-                  <Title level={3} style={{ color: "#FF8C00" }}>
-                    {tourPrice[selectedDate]} 1000$
-                  </Title>
-
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    onClick={scrollToTourSection}
+                  <span
                     style={{
-                      backgroundColor: "#FF8C00",
+                      fontWeight: "bold",
                       borderColor: "#FF8C00",
+                      fontSize: "23px",
+                      color: "#cf1322",
+                      margin: "20px",
                     }}
                   >
-                    Đặt Tour Ngay
+                    1000$
+                  </span>
+                  <Button
+                    type="primary"
+                    onClick={scrollToTourSection}
+                    style={{
+                      backgroundColor: "#F4A460",
+                      borderColor: "#FF8C00",
+                      fontSize: "14px",
+                      alignSelf: "start",
+                      margin: "0px",
+                    }}
+                  >
+                    Book Now
                   </Button>
-                </div>
-              </Card>
+                </Card>
+
+                <Card
+                  style={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    margin: "5px",
+                  }}
+                >
+                  <Badge.Ribbon text="Trustworthy Information" color="green">
+                    <Card.Meta
+                      title="Tour"
+                      description={
+                        <>
+                          <div>
+                            <Rate disabled defaultValue={7} />
+                            <br />
+                            <span>
+                              Top destination: Highly rated by guests (9.9
+                              points)
+                            </span>
+                          </div>
+                          <div>
+                            <Badge
+                              status="processing"
+                              text="Free private parking inside the premises"
+                            />
+                          </div>
+                        </>
+                      }
+                    />
+                  </Badge.Ribbon>
+                  <div style={{ marginTop: "16px" }}>
+                    Guests say that the description and images of this property
+                    are very accurate.
+                  </div>
+                </Card>
+              </div>
+
               <div
                 id="floating-box"
                 style={{
@@ -301,11 +443,11 @@ const BookingPage = () => {
                   padding: "1rem",
                   borderRadius: "4px",
                   boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                  display: window.innerWidth < 992 ? "none" : "block", // Hide on smaller screens
+                  display: window.innerWidth < 992 ? "none" : "block",
                 }}
               >
                 <div style={{ marginBottom: "1rem" }}>
-                  <strong>Hỗ trợ khách hàng</strong>
+                  <strong>Customer Support</strong>
                 </div>
                 <div style={{ marginBottom: "1rem" }}>
                   Hotline: <a href="tel:19001888">1900 1888</a>
@@ -318,7 +460,7 @@ const BookingPage = () => {
                   type="primary"
                   style={{ backgroundColor: "#FF8C00", borderColor: "#FF8C00" }}
                 >
-                  Bạn muốn được gọi lại?
+                  Want a callback?
                 </Button>
               </div>
             </Col>
@@ -334,19 +476,25 @@ const BookingPage = () => {
               marginTop: "-90px",
             }}
           >
-            <Card title="Tour ghép - Khởi hành tại Phú Quốc">
+            <Card title="Shared Tour - Departing from Phu Quoc">
               <Row gutter={16}>
                 <Col span={24}>
                   <Button
                     type="primary"
                     icon={<CalendarOutlined />}
                     onClick={handleCalendarButtonClick}
-                    style={{ marginBottom: 16, borderRadius: "8px" }}
+                    style={{
+                      marginBottom: 16,
+                      borderRadius: "8px",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                      color: "Blue",
+                    }}
                   >
-                    Xem lịch
+                    View Calendar
                   </Button>
                   <Modal
-                    title="Lịch"
+                    title="Calendar"
                     visible={isCalendarVisible}
                     onCancel={handleCloseCalendarModal}
                     footer={null}
@@ -354,39 +502,146 @@ const BookingPage = () => {
                   >
                     <Calendar fullscreen={false} />
                   </Modal>
-                  <Button.Group>
-                    {[...Array(11).keys()].map((day) => (
-                      <Button
-                        key={day}
-                        className="date-pill"
-                        onClick={() => handleDateChange(`${day + 13} thg 3`)}
-                      >
-                        {day + 13} thg 3
-                      </Button>
-                    ))}
-                  </Button.Group>
+
+                  <Content style={{ padding: " px, 100px" }}>
+                    <div className="site-layout-content"></div>
+                    <div ref={tourSectionRef}>
+                      <Row gutter={16}>
+                        <Col span={24}>{dateSelector}</Col>
+                      </Row>
+
+                      <Row>
+                        <Col span={24}>
+                          {selectedDate && (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                backgroundColor: "#fff",
+                                padding: "20px",
+                                borderRadius: "5px",
+                                margin: "20px",
+                              }}
+                            >
+                              <div style={{ maxWidth: "80%" }}>
+                                <Title
+                                  level={3}
+                                  style={{ color: "#330099", margin: 0 }}
+                                >
+                                  {tourPrice[selectedDate]} Shared tour for up
+                                  to 40 guests - Departure from HCMC | Vietjet
+                                  Air Flight
+                                </Title>
+                                <Text style={{ color: "#D3D3D3" }}>
+                                  Price for {selectedDate}
+                                </Text>
+                                <Row
+                                  gutter={16}
+                                  style={{
+                                    backgroundColor: "#fff",
+                                    padding: "24px",
+                                    borderRadius: "8px",
+
+                                    marginBottom: "20px",
+                                  }}
+                                >
+                                  <Col span={24}>
+                                    <div style={{ marginBottom: "16px" }}>
+                                      <Title level={4}>Adults</Title>
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "space-between",
+                                          alignItems: "baseline",
+                                          marginBottom: "9px",
+                                        }}
+                                      >
+                                        <Text
+                                          style={{
+                                            fontSize: "12px",
+                                            color: "#B0B0B0",
+                                            fontWeight: "500",
+                                          }}
+                                        >
+                                          ${adultPrice.toLocaleString("en-US")}
+                                        </Text>
+                                      </div>
+                                      <InputNumber
+                                        min={0}
+                                        value={adultCount}
+                                        onChange={setAdultCount}
+                                        style={{
+                                          display: "block",
+                                          marginTop: "8px",
+                                        }}
+                                      />
+                                    </div>
+                                    <Text
+                                      style={{
+                                        fontSize: "16px",
+                                        color: "#333",
+                                        fontWeight: "500",
+                                      }}
+                                    >
+                                      Tour Guide
+                                    </Text>
+                                    <Input
+                                      placeholder="Select Tour Guide"
+                                      value={tourGuide}
+                                      onChange={(e) =>
+                                        setTourGuide(e.target.value)
+                                      }
+                                    />
+                                    <div
+                                      style={{
+                                        borderTop: "1px solid #e8e8e8",
+                                        paddingTop: "24px",
+                                        marginTop: "24px",
+                                      }}
+                                    >
+                                      <Title level={4}>Total Price</Title>
+                                      <Text
+                                        style={{
+                                          fontSize: "20px",
+                                          color: "#cf1322",
+                                          fontWeight: "600",
+                                        }}
+                                      >
+                                        {getTotalPrice()}
+                                      </Text>
+                                    </div>
+
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <Button
+                                        type="primary"
+                                        className="booking-button"
+                                        style={{
+                                          backgroundColor: "#FF8C00",
+                                          marginTop: "10px",
+                                        }}
+                                        onClick={handleBookTour}
+                                      >
+                                        Book Tour Now
+                                      </Button>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </div>
+                            </div>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </Content>
                 </Col>
               </Row>
-              <Card>
-                <Row align="middle" justify="space-between">
-                  <Col>
-                    <Title level={4} style={{ color: "#FF8C00" }}>
-                      {tourPrice[selectedDate]} Tour ghép cho tối đa 40 khách -
-                      Khởi hành TPHCM | Bay Vietjet Air
-                    </Title>
-                  </Col>
-                  <Col>
-                    <Button
-                      type="primary"
-                      className="booking-button"
-                      style={{ backgroundColor: "#FF8C00" }}
-                      onClick={handleBookTour}
-                    >
-                      Đặt Tour Ngay
-                    </Button>
-                  </Col>
-                </Row>
-              </Card>
             </Card>
           </div>
         </div>

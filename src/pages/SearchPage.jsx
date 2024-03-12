@@ -22,7 +22,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3001/",
+    link: "http://localhost:3000/",
   };
 
   const cardInfo1 = {
@@ -40,7 +40,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/danang",
+    link: "http://localhost:3000/danang",
   };
 
   const cardInfo2 = {
@@ -58,7 +58,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/nha-trang",
+    link: "http://localhost:3000/nha-trang",
   };
   const cardInfo3 = {
     image:
@@ -75,7 +75,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/phu-quoc",
+    link: "http://localhost:3000/phu-quoc",
   };
 
   const cardInfo4 = {
@@ -93,7 +93,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/sapa",
+    link: "http://localhost:3000/sapa",
   };
 
   const cardInfo5 = {
@@ -111,7 +111,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/vung-tau",
+    link: "http://localhost:3000/vung-tau",
   };
   const cardInfo6 = {
     image:
@@ -128,7 +128,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/Hue",
+    link: "http://localhost:3000/Hue",
   };
   const cardInfo7 = {
     image:
@@ -145,7 +145,7 @@ const SearchPage = () => {
       "Hoạt Động Giải Trí",
       "Sức Khỏe",
     ],
-    link: "http://localhost:3003/dalat",
+    link: "http://localhost:3000/dalat",
   };
   return (
     <div>
@@ -154,7 +154,7 @@ const SearchPage = () => {
           placeholder="Nhập từ khóa tìm kiếm"
           enterButton="Tìm kiếm"
           size="large"
-          onSearch={(value) => console.log(value)} // You can handle search logic here
+          onSearch={(value) => console.log(value)}
         />
       </div>
       <div className="horizontal-card">

@@ -11,6 +11,8 @@ import TourVungtau from "./pages/ToursVungtau";
 import PaymentPage from "./pages/PaymentPage";
 import ToursDaLat from "./pages/ToursDaLat";
 import ToursHue from "./pages/ToursHue";
+import ProfilePage from "./pages/ProfilePage";
+
 const App = () => {
   return (
     <Router>
@@ -26,6 +28,7 @@ const App = () => {
         <Route path="/dalat" element={<ToursDaLat />} />
         <Route path="/hue" element={<ToursHue />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/profilepage" element={<ProfilePage />} />
       </Routes>
     </Router>
   );
